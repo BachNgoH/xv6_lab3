@@ -1,0 +1,68 @@
+Page Table Analysis:
+
+Virtual Address (VA): 0x00000000  
+Page Table Entry (PTE): 0x21FC885B  
+Physical Address (PA): 0x87F22000  
+Permissions (0x5B → 01011011 in binary):  
+- Readable  
+- Executable  
+- Accessible in user mode  
+- Not writable  
+→ Likely a code (text) segment  
+
+Virtual Address (VA): 0x00001000  
+Page Table Entry (PTE): 0x21FC7C17  
+Physical Address (PA): 0x87F1F000  
+Permissions (0x17 → 00010111):  
+- Readable and writable  
+- User-accessible  
+- Not executable  
+→ Likely part of the heap or data segment  
+
+Virtual Address (VA): 0x00002000  
+Page Table Entry (PTE): 0x21FC7807  
+Physical Address (PA): 0x87F1E000  
+Permissions (0x07 → 00000111):  
+- Readable and writable  
+- Kernel-only access  
+- Not executable  
+→ Possibly a kernel-mapped memory page  
+
+Virtual Address (VA): 0x00003000  
+Page Table Entry (PTE): 0x21FC74D7  
+Physical Address (PA): 0x87F1D000  
+Permissions (0xD7 → 11010111):  
+- Readable and writable  
+- User-accessible  
+- Not executable  
+- Page has been accessed and modified  
+→ Most likely a data page in use  
+
+Virtual Address (VA): 0x00004000 to 0x00009000  
+- All have PTEs and PAs set to 0  
+- Permissions: 0x0 → No access  
+→ These virtual pages are currently unmapped and inaccessible  
+
+Virtual Address (VA): 0xFFFF6000 to 0xFFFFD000  
+- All are unmapped (PTE and PA = 0, permissions = 0x0)  
+→ Not in use or intentionally left inaccessible  
+
+Virtual Address (VA): 0xFFFFE000  
+Page Table Entry (PTE): 0x21FD08C7  
+Physical Address (PA): 0x87F42000  
+Permissions (0xC7 → 11000111):  
+- Readable and writable  
+- Kernel-only access  
+- Not executable  
+- Has been accessed and modified  
+→ Likely used by the kernel  
+
+Virtual Address (VA): 0xFFFFF000  
+Page Table Entry (PTE): 0x2000184B  
+Physical Address (PA): 0x80006000  
+Permissions (0x4B → 01001011):  
+- Readable and executable  
+- Kernel-only access  
+- Not writable  
+- Accessed previously  
+→ May represent a read-only kernel code page  
