@@ -488,9 +488,37 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
 
 
 #ifdef LAB_PGTBL
+// Recursive helper to print page table entries.
+static void
+vmprint_walk(pagetable_t pagetable, int level, uint64 va)
+{
+    for (int i = 0; i < 512; i++) {
+        pte_t pte = pagetable[i];
+        if (!(pte & PTE_V))
+            continue;
+        // Compute this entry's virtual address prefix.
+        uint64 new_va = va | ((uint64)i << (PGSHIFT + 9*level));
+        // Sign-extend Sv39 39-bit address to 64 bits.
+        int shift = PGSHIFT + 9*(level+1) - 1;
+        if (new_va & (1ULL << shift))
+            new_va |= ~((1ULL << (shift+1)) - 1);
+        // Print indentation based on tree depth.
+        for (int j = 0; j < 3 - level; j++)
+            printf("..");
+        // Print the virtual address, raw PTE bits, and the physical address.
+        printf("%p: pte %p pa %p\n", (void*)new_va, (void*)pte, (void*)PTE2PA(pte));
+        // Recurse into non-leaf (page-table) entries.
+        if (level > 0 && !(PTE_LEAF(pte)))
+            vmprint_walk((pagetable_t)PTE2PA(pte), level-1, new_va);
+    }
+}
+
+// Top-level entry for printing a page table.
 void
-vmprint(pagetable_t pagetable) {
-  // your code here
+vmprint(pagetable_t pagetable)
+{
+    printf("page table %p\n", pagetable);
+    vmprint_walk(pagetable, 2, 0);
 }
 #endif
 
