@@ -64,9 +64,12 @@ void            ramdiskintr(void);
 void            ramdiskrw(struct buf*);
 
 // kalloc.c
+void*           superKalloc(void);
 void*           kalloc(void);
+void            superKfree(void *pa);
 void            kfree(void *);
 void            kinit(void);
+int             mapSuperPage(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm);
 
 // log.c
 void            initlog(int, struct superblock*);
@@ -187,7 +190,6 @@ void            vmprint(pagetable_t);
 #ifdef LAB_PGTBL
 pte_t*          pgpte(pagetable_t, uint64);
 #endif
-
 // plic.c
 void            plicinit(void);
 void            plicinithart(void);

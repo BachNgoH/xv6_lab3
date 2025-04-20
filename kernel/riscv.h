@@ -357,6 +357,7 @@ sfence_vma()
 typedef uint64 pte_t;
 typedef uint64 *pagetable_t; // 512 PTEs
 
+
 #endif // __ASSEMBLER__
 
 #define PGSIZE 4096 // bytes per page
@@ -375,7 +376,9 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PTE_W (1L << 2)
 #define PTE_X (1L << 3)
 #define PTE_U (1L << 4) // user can access
+#define PTE_SUPER (1L << 5)
 
+ 
 
 
 #if defined(LAB_MMAP) || defined(LAB_PGTBL)
